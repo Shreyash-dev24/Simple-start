@@ -1,0 +1,161 @@
+section .data
+msg db "The sorted array in ascending order is ", 10
+msglen equ $-msg
+arr db 12h,62h,25h,00h,01h
+
+%macro operate 4
+    mov rax,%1
+    mov rdi,%2
+    mov rsi,%3
+    mov rdx,%4
+    syscall
+%endmacro
+
+section .bss
+result resb 32
+
+section .text
+global _start
+
+_start:
+    mov bl,5
+loop_outer:
+    mov cl,4
+    mov rsi,arr
+
+loop_inner:
+    mov al,[rsi]
+    cmp al,[rsi+1]
+    jbe only_inc
+    xchg al,[rsi+1]
+    mov [rsi],al
+only_inc:
+    inc rsi
+    dec cl
+    jnz loop_inner
+    dec bl
+    jnz loop_outer
+
+    operate 1,1,msg,msglen
+
+    mov rdi,arr
+    mov rsi,result
+    mov rcx,5
+
+disp_loop:
+    mov al,[rdi]
+    mov ah,al
+    shr al,4
+    call nibble_to_ascii
+    mov [rsi],al
+    inc rsi
+    mov al,ah
+    and al,0Fh
+    call nibble_to_ascii
+    mov [rsi],al
+    inc rsi
+    mov byte [rsi],' '
+    inc rsi
+    inc rdi
+    loop disp_loop
+
+    mov rdx,rsi
+    sub rdx,result
+    operate 1,1,result,rdx
+
+    operate 60,0,0,0
+
+nibble_to_ascii:
+    cmp al,9
+    jbe .digit
+    add al,55
+    ret
+.digit:
+    add al,'0'
+    ret
+
+
+
+
+
+
+
+
+desc
+
+
+section .data
+    msg db "The sorted array in descending order : ", 10
+    msglen equ $-msg
+    arr db 12h,62h,25h,00h,01h
+
+%macro operate 4
+    mov rax,%1
+    mov rdi,%2
+    mov rsi,%3
+    mov rdx,%4
+    syscall
+%endmacro
+
+section .bss
+    result resb 16
+
+section .text
+global _start
+
+_start:
+    mov bl,5
+sort_outer:
+    mov cl,4
+    mov rsi,arr
+sort_inner:
+    mov al,[rsi]
+    cmp al,[rsi+1]
+    jae no_swap
+    xchg al,[rsi+1]
+    mov [rsi],al
+no_swap:
+    inc rsi
+    dec cl
+    jnz sort_inner
+    dec bl
+    jnz sort_outer
+
+    operate 1,1,msg,msglen
+
+    mov rdi,arr
+    mov rsi,result
+    mov ecx,5
+print_each:
+    mov al,[rdi]
+    mov edx,2
+nibble_loop:
+    rol al,4
+    mov bl,al
+    and bl,0x0F
+    cmp bl,9
+    jbe .digit
+    add bl,55
+    jmp .store
+.digit:
+    add bl,48
+.store:
+    mov [rsi],bl
+    inc rsi
+    dec edx
+    jnz nibble_loop
+
+    mov byte [rsi],' '
+    inc rsi
+    inc rdi
+    loop print_each
+
+    dec rsi
+    mov byte [rsi],10
+
+    mov rdx,rsi
+    sub rdx,result
+    inc rdx
+    operate 1,1,result,rdx
+
+    operate 60,0,0,0

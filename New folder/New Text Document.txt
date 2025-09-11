@@ -1,0 +1,630 @@
+%macro rw 4
+  mov rax,%1
+  mov rdi,%2
+  mov rsi,%3
+  mov rdx,%4
+  syscall
+%endmacro
+
+section .data
+  array db 01h ,02h ,03h, 04h, 05h
+  msg db "the sum of elements of array : "
+  msg1 equ $-msg
+
+section .bss
+  result resb 1
+
+section .text
+    global _start
+
+_start:
+
+    rw 1,1,msg,msg1
+
+    mov rsi,array
+    mov ax,00h
+    mov cl,5
+
+up2:
+
+   add al,byte[rsi]       ;up to you add alcohol byte rsika junk spkip inc ah
+   jnc skip
+   inc ah
+
+skip:
+
+   inc rsi                ;increment rsika declare clut genz up to you
+   dec cl
+   jnz up2
+
+   mov bp,4               ;remember
+
+up:
+
+   rol ax,4
+   mov bx,ax
+   and ax,0Fh
+   cmp al,09h
+   jbe down
+   add al,07h
+
+down:
+
+  add al,30h
+  mov byte[result] ,al
+  rw 1,1,result,1
+  mov ax,bx
+  dec bp
+  jnz up
+
+  rw 60,0,0,0
+
+
+  ;Algorithm (short)
+
+;Display the message: "the sum of elements of array :"
+;Initialize sum = 0.
+;Loop through all 5 array elements:
+;Add each element to sum.
+;If carry occurs, increase higher byte.
+;After loop, convert the sum into ASCII (hex → decimal digits).
+;Print the digits one by one.
+;Exit program.
+
+  ;pseudo code
+ ; START
+ ; PRINT "the sum of elements of array :"
+
+ ; sum = 0
+  ;FOR i = 0 TO 4
+      ;sum = sum + array[i]
+  ;END FOR
+
+  ;CONVERT sum to ASCII digits
+  ;PRINT sum
+
+  ;EXIT
+;END
+
+
+
+
+
+%macro rw 4
+    mov rax,%1
+    mov rdi,%2
+    mov rsi,%3
+    mov rdx,%4
+    syscall
+%endmacro
+
+section .data
+    msg db "The ascending order is:",0Ah
+    msglen equ $-msg
+    arr db 01h,02h,0Ah,08h,05h    
+
+section .bss
+    result resb 15                
+
+section .text
+    global _start
+
+_start:
+    rw 1,1,msg,msglen
+
+    mov bl,5            
+
+loop_outer:
+    mov cl,4            
+    mov rsi,arr        
+
+up:
+    mov al,byte[rsi]        
+    cmp al,byte[rsi+1]      
+    jbe only_inc          
+    xchg al,byte[rsi+1]    
+    mov byte[rsi],al
+
+only_inc:
+    inc rsi
+    dec cl
+    jnz up
+    dec bl
+    jnz loop_outer
+    mov rdi,arr
+    mov rsi,result
+    mov dl,5
+           
+
+display_loop1:
+    mov cl,2
+    mov al,[rdi]
+
+up1:
+    rol al,4
+    mov bl,al
+    and al,0Fh
+    cmp al,09h
+    jbe down1
+    add al,07h
+down1:
+    add al,30h
+    mov byte[rsi],al
+    mov al,bl
+    inc rsi
+    dec cl
+    jnz up1
+
+    mov byte[rsi],20h
+    inc rsi
+    inc rdi
+    dec dl
+    jnz display_loop1
+
+    rw 1,1,result,15    
+    rw 60,0,0,0        
+
+    ; Algorithm
+; 1. Start
+; 2. Initialize array of N=5 elements.
+; 3. Repeat outer loop (N-1 times):
+;    a. Traverse array with inner loop
+;    b. Compare adjacent elements
+;    c. If order is wrong, swap them
+; 4. After sorting, traverse sorted array
+; 5. Convert each number into ASCII for display
+; 6. Print the sorted array
+; 7. End
+
+   ; Pseudo Code
+; START
+;   PRINT "The ascending order is:"
+;   FOR pass = 1 to N-1
+;       FOR i = 0 to N-2
+;           IF arr[i] > arr[i+1] THEN
+;               SWAP arr[i], arr[i+1]
+;           ENDIF
+;       NEXT i
+;   NEXT pass
+;   FOR i = 0 to N-1
+;       DISPLAY arr[i]
+;   NEXT i
+; END
+
+
+
+%macro rw 4
+    mov rax,%1
+    mov rdi,%2
+    mov rsi,%3
+    mov rdx,%4
+    syscall
+%endmacro
+
+section .data
+    msg db "The descending order is:",0Ah
+    msglen equ $-msg
+    arr db 01h,02h,0Ah,08h,05h    
+
+section .bss
+    result resb 15                
+
+section .text
+    global _start
+
+_start:
+    rw 1,1,msg,msglen
+
+    mov bl,5            
+
+loop_outer:
+    mov cl,4            
+    mov rsi,arr        
+
+up:
+    mov al,byte[rsi]        
+    cmp al,byte[rsi+1]      
+    jae only_inc           ; changed for descending
+    xchg al,byte[rsi+1]    
+    mov byte[rsi],al
+
+only_inc:
+    inc rsi
+    dec cl
+    jnz up
+    dec bl
+    jnz loop_outer
+    mov rdi,arr
+    mov rsi,result
+    mov dl,5
+           
+
+display_loop1:
+    mov cl,2
+    mov al,[rdi]
+
+up1:
+    rol al,4
+    mov bl,al
+    and al,0Fh
+    cmp al,09h
+    jbe down1
+    add al,07h
+down1:
+    add al,30h
+    mov byte[rsi],al
+    mov al,bl
+    inc rsi
+    dec cl
+    jnz up1
+
+    mov byte[rsi],20h
+    inc rsi
+    inc rdi
+    dec dl
+    jnz display_loop1
+
+    rw 1,1,result,15    
+    rw 60,0,0,0        
+
+    ; Algorithm (Descending Order)
+; 1. Start
+; 2. Initialize array of N=5 elements.
+; 3. Repeat outer loop (N-1 times):
+;    a. Traverse array with inner loop
+;    b. Compare adjacent elements
+;    c. If A[i] < A[i+1], then swap them
+; 4. After sorting, traverse sorted array
+; 5. Convert each number into ASCII for display
+; 6. Print the sorted array
+; 7. End
+
+   ; Pseudo Code (Descending Order)
+; START
+;   PRINT "The descending order is:"
+;   FOR pass = 1 to N-1
+;       FOR i = 0 to N-2
+;           IF arr[i] < arr[i+1] THEN
+;               SWAP arr[i], arr[i+1]
+;           ENDIF
+;       NEXT i
+;   NEXT pass
+;   FOR i = 0 to N-1
+;       DISPLAY arr[i]
+;   NEXT i
+; END
+
+
+section .data
+    string1 db "Hello ", 0
+    string2 db "World ", 0ah, 0
+   
+section .bss
+    result resb 100
+   
+section .text
+    global _start
+
+_start:
+
+    lea rsi, [string1]
+    lea rdi, [result]
+
+    .copy1:
+
+    lodsb
+    cmp al, 0
+    je .copy2
+    stosb
+    jmp .copy1
+
+    .copy2:
+
+    lea rsi, [string2]
+
+    .copy2_loop:
+   
+    lodsb
+    cmp al, 0
+    je .print
+    stosb
+    jmp .copy2_loop
+
+    .print:
+
+    mov rax, 1
+    mov rdi, 1
+    lea rsi, [result]
+    mov rdx, 15
+    syscall
+   
+    mov rax, 60
+    xor rdi, rdi
+    syscall
+
+
+    ;Algorithm
+; 1. Start
+; 2. Take two strings (string1 and string2).
+; 3. Copy string1 into the result buffer character by character.
+; 4. When string1 ends (null terminator), start copying string2 into result.
+; 5. After both strings are copied, print the result buffer.
+; 6. Exit program.
+; 7. End
+
+   ;Pseudo Code
+; START
+;   string1 = "Hello "
+;   string2 = "World"
+;   result = ""
+;
+;   FOR each character in string1 UNTIL null
+;       APPEND character to result
+;   NEXT
+;
+;   FOR each character in string2 UNTIL null
+;       APPEND character to result
+;   NEXT
+;
+;   PRINT result
+;   EXIT
+; END
+
+
+%macro RW 4
+    mov rax, %1
+    mov rdi, %2
+    mov rsi, %3
+    mov rdx, %4
+    syscall
+%endmacro
+
+section .data
+    str1 db "Hello world from asm",0  
+    len equ $-str1
+
+    m1 db "Spaces: ",0
+    l1 equ $-m1
+    m2 db "Words: ",0
+    l2 equ $-m2
+    nl db 10                            
+
+section .bss
+    space1  resb 1
+    word1   resb 1
+
+section .text
+    global _start
+
+_start:
+    ; count spaces
+    mov rsi, str1
+    mov rcx, len
+    xor bl, bl              
+
+.loop:
+    cmp rcx, 0
+    je .done
+    mov al, [rsi]
+    cmp al, 20h            
+    jne .next
+    inc bl
+.next:
+    inc rsi
+    dec rcx
+    jmp .loop
+
+.done:
+    ; print spaces
+    RW 1,1, m1, l1
+    mov al, bl
+    add al, '0'
+    mov [space1], al
+    RW 1,1, space1, 1
+    RW 1,1, nl, 1
+
+    ; print words
+    RW 1,1, m2, l2
+    mov al, bl
+    inc al
+    add al, '0'
+    mov [word1], al
+    RW 1,1, word1, 1
+    RW 1,1, nl, 1
+
+    ; exit
+    mov rax, 60
+    xor rdi, rdi
+    syscall
+
+
+   ;Algorithm
+; 1. Start
+; 2. Take a string (str1).
+; 3. Initialize space counter = 0.
+; 4. Loop through each character:
+;    a. If character = space (' '), increment space counter.
+; 5. After loop, spaces = count, words = spaces + 1.
+; 6. Print number of spaces.
+; 7. Print number of words.
+; 8. Exit program.
+; 9. End
+
+    ;Pseudo Code
+; START
+;   str1 = "Hello world from asm"
+;   spaces = 0
+;
+;   FOR each character in str1
+;       IF character == ' ' THEN
+;           spaces = spaces + 1
+;       ENDIF
+;   NEXT
+;
+;   words = spaces + 1
+;
+;   PRINT "Spaces: ", spaces
+;   PRINT "Words: ", words
+;   EXIT
+; END
+
+
+
+
+
+
+
+section .data
+   str1 db "hello" ,0
+   str2 db "hello" ,0
+   msg1 db "strings are equal" ,10,0
+   msg2 db "strings are not equal" ,0
+
+section .text
+    global _start
+
+_start:
+
+    mov rsi,str1
+    mov rdi,str2
+
+.compare:
+    mov al,[rsi]
+    mov bl,[rdi]
+    cmp al,bl
+    jne .not_equal
+    cmp al,0
+    je .equal
+    inc rsi
+    inc rdi
+    jmp .compare
+
+.equal:
+    mov rax,1
+    mov rdi,1
+    mov rsi,msg1
+    mov rdx,18
+    syscall
+    jmp .exit
+
+.not_equal:
+   mov rax,1
+   mov rdi,1
+   mov rsi,msg2
+   mov rdx,22
+   syscall
+
+.exit:
+  mov rax,60
+  xor rdi,rdi
+  syscall
+
+
+   ;Algorithm
+; 1. Start
+; 2. Initialize two strings str1 and str2.
+; 3. Compare characters one by one:
+;    a. If any characters differ, go to "not equal".
+;    b. If null terminator (0) is reached, strings are equal.
+; 4. If equal, print "strings are equal".
+; 5. If not equal, print "strings are not equal".
+; 6. Exit program.
+; 7. End
+
+   ; Pseudo Code
+; START
+;   str1 = "hello"
+;   str2 = "hello"
+;
+;   i = 0
+;   WHILE TRUE
+;       IF str1[i] != str2[i] THEN
+;           PRINT "strings are not equal"
+;           EXIT
+;       ENDIF
+;       IF str1[i] == '\0' THEN
+;           PRINT "strings are equal"
+;           EXIT
+;       ENDIF
+;       i = i + 1
+;   END WHILE
+; END
+
+
+
+%macro rw 4
+  mov rax, %1
+  mov rdi, %2
+  mov rsi, %3
+  mov rdx, %4
+  syscall
+%endmacro
+
+section .data
+    mainstr db "Hello this is Assembly language ",0
+    substr db "Assembly ",0
+    substrFound db "Substring Found ! ",0
+    substrFound1 equ $-substrFound
+    substrNotFound db "Substring not found ! ",0
+    substrNotFound1 equ $-substrNotFound
+
+section .text
+     global _start
+
+_start:
+
+     lea rbx, [mainstr]
+
+.loop:
+     mov rsi, rbx
+     lea rdi, [substr]
+     mov rcx, 8
+     repe cmpsb
+     je .substr_Found
+
+     mov al ,[rbx]
+     cmp al, 0
+     je .substr_Not_Found
+     inc rbx
+     jmp .loop
+     
+.substr_Found:
+     rw 1,1,substrFound,substrFound1
+     jmp .exit
+
+.substr_Not_Found:
+     rw 1,1,substrNotFound,substrNotFound1
+
+.exit:
+     mov rax, 60
+     xor rdi, rdi
+     syscall
+
+
+    ;Algorithm
+; 1. Start
+; 2. Initialize pointers to the main string and substring.
+; 3. Loop through the main string:
+;    a. Compare substring characters with current main string position.
+;    b. If all characters match → substring found.
+;    c. If mismatch, move to next character in main string.
+; 4. If substring found → print "Substring Found!".
+; 5. Else → print "Substring not found!".
+; 6. Exit program.
+; 7. End
+
+    ; Pseudo Code
+; START
+;   mainstr = "Hello this is Assembly language"
+;   substr  = "Assembly"
+;
+;   FOR each position in mainstr
+;       IF substring matches at this position THEN
+;           PRINT "Substring Found!"
+;           EXIT
+;       ENDIF
+;   NEXT
+;
+;   PRINT "Substring not found!"
+;   EXIT
+; END
