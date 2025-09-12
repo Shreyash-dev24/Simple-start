@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Sizing Units</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .box {
+        box-sizing: border-box;
+        border: 2px solid black;
+        /* width: 233px; */
+        margin: 23px auto;
+        width: 80vw;
+        height: 10vh;
+        background-color: aquamarine;
+      }
+      .container {
+        box-sizing: border-box;
+        border: 2px solid black;
+        /* width: 233px; */
+        margin: 23px auto;
+        width: 80vw;
+        /* height: 80vh; */
+        min-height: 80vh;
+        font-size: 16px;
+        background-color: aquamarine;
+      }
+      .container > div {
+        font-size: 1em;
+        border: 2px solid red;
+        width: 50%;
+      }
+      .container > div > div{
+        border: 2px solid blue;
+        width: 50%;
+      }
+      .mycont {
+        border: 2px solid black;
+        box-sizing: border-box;
+        background-color: red;
+        color: yellow;
+        margin: 23px auto;
+        font-size: 22px;
+        width: 80vw;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">This is a box</div>
+
+    <div class="container">
+      <div>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Omnis eaque
+        suscipit ipsum unde voluptate facilis officia tempora quaerat dolore
+        harum id, accusantium inventore optio eveniet cumque repellendus,
+        aspernatur libero ad atque incidunt soluta, eius consectetur? Quaerat
+        accusantium hic dolorum quisquam enim explicabo minus voluptatem iusto,
+
+        <div>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed
+          veritatis ullam expedita nulla deleniti fugiat, harum odio
+          necessitatibus quas nam laudantium facilis dignissimos consectetur
+          blanditiis quibusdam nostrum atque eligendi sequi!
+        </div>
+      </div>
+    </div>
+
+    <div class="mycont">i m a container</div>
+  </body>
+</html>
