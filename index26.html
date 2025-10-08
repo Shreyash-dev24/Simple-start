@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multicolor Nav</title>
+    <style>
+      :root {
+        --navcolor: rgb(102, 255, 0);
+        --li_color: rgb(128, 23, 0);
+        --li_first: rgb(253, 37, 167);
+      }
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      nav {
+        background-color: var(--navcolor);
+        display: flex;
+        margin: 10px 10px;
+      }
+      nav li {
+        list-style-type: none;
+        padding: 20px;
+      }
+      nav > :first-child {
+        background-color: var(--li_first);
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <li>Home</li>
+      <li>About Us</li>
+      <li>Amenities</li>
+      <li>Contact Us</li>
+    </nav>
+  </body>
+</html>
